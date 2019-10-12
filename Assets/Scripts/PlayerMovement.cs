@@ -6,9 +6,11 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public float moveSpeed = 5f;
-    public float movspd;
+    public float runSpeed = 1f;
     public Rigidbody2D rb;
-    public Vector2 movement;
+
+    private Vector3 movement;
+    private float movspd;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,21 +21,35 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         ProcessInputs();
+         
     }
     
     void FixedUpdate()
     {
         Move();
     }
+    void LateUpdate(){
+        
+    }
 
+    // Process the inputs of the controller axis
     void ProcessInputs()
     {
-        movement = new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"));
+        movement.x = Input.GetAxisRaw("Horizontal"); 
+        movement.y = Input.GetAxisRaw("Vertical");
+        
+        // RUN
+        if (Input.GetButton("Fire3"))
+            runSpeed = 1.5f;
+        else
+            runSpeed = 1f;
+
         movspd = Mathf.Clamp(movement.magnitude, 0.0f, 1.0f);
         movement.Normalize();
     }
 
+    // 
     void Move(){
-        rb.velocity = movement * movspd * moveSpeed;
+       rb.velocity = movement * movspd * moveSpeed * runSpeed;
     }
 }
