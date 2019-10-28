@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,18 +13,18 @@ public class CameraFollow : MonoBehaviour
         
     }
     void FixedUpdate(){
-        
+        CameraMovement();
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        CameraMovement();
+        
     }
 
     void CameraMovement(){
         if(transform.position != target.position){
-            Vector3 targetPosition = new Vector3(target.position.x, target.position.y, transform.position.z);
+            Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z);
             transform.position = Vector3.Lerp(transform.position, targetPosition, smoothing);
         }
     }
