@@ -4,23 +4,34 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-
+    // Velocidades al correr y caminar
     public float moveSpeed = 5f;
     public float runSpeed = 1f;
+    private Vector3 movement = Vector3.zero;
 
+    // Fuerza de salto y switchs para saltar
     public float jumpForce = 1f;
-    public float rayDistance = 1f;
-
-    public Rigidbody rb;
     public bool grnd;
     public bool jumping;
 
-    public Vector3 vel;
-
-    private Vector3 movement = Vector3.zero;
-
+    // Pra el tiempo de salto
     public float jumpTime;
     public float jumpTimeCount;
+
+    // Distancia del raycast
+    public float rayDistance = 1f;
+
+    //Rigidbody
+    public Rigidbody rb;
+    public GameObject cameraObject;
+    
+    // Cambio de personaje
+    public int charNumber = 0;
+    public bool activateMove;
+
+    // Debug
+    public Vector3 vel;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +40,15 @@ public class Movement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        grnd = IsGrounded();
+    {   
+        activateMove = cameraObject.GetComponent<CameraFollow>().characterSwitch;
+        if ((activateMove ? 1 : 0) == charNumber){
+            grnd = IsGrounded();
 
-        ProcessMovement();
-        Jump();
+            ProcessMovement();
+            Jump();
+        }
+
     }
 
     void FixedUpdate()
@@ -63,7 +78,8 @@ public class Movement : MonoBehaviour
 
         movement.Normalize();
     }
-    // Move the character
+
+    // Mueve al personaje
     private void Move()
     {
         rb.AddForce(movement * moveSpeed * runSpeed, ForceMode.VelocityChange);
@@ -72,13 +88,15 @@ public class Movement : MonoBehaviour
     // 
     private void Jump()
     {
-
+        // Si esta tocando el suelo y se aprieta el boton saltar, saltara
         if (IsGrounded() && Input.GetButtonDown("Jump"))
         {
             jumping = true;
             jumpTimeCount = jumpTime;
             rb.AddForce(0, jumpForce , 0, ForceMode.Impulse);
         }
+
+        // Modula el tiempo de salto mientras se deja presionado el boton
         if (Input.GetButton("Jump") && jumping)
         {
             if (jumpTimeCount > 0)
@@ -91,12 +109,15 @@ public class Movement : MonoBehaviour
                 jumping = false;
             }
         }
-
+        
+        // Si se suelta el boton, se saldra del estado saltar
         if (Input.GetButtonUp("Jump"))
         {
             jumping = false;
         }
     }
+
+    // Revisa mediante un raycast, si esta tocando el suelo
     private bool IsGrounded()
     {
         Debug.DrawRay(transform.position, Vector3.down * rayDistance, Color.blue);
