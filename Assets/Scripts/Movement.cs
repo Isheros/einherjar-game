@@ -29,6 +29,11 @@ public class Movement : MonoBehaviour
     public int charNumber = 0;
     public bool activateMove;
 
+    // Para seguir al personaje
+    public Transform otherPlayer;
+    public float distance;
+    public float magnitude;
+
     // Debug
     public Vector3 vel;
 
@@ -47,6 +52,21 @@ public class Movement : MonoBehaviour
 
             ProcessMovement();
             Jump();
+        }else{
+            Vector3 direction = otherPlayer.position - transform.position;
+            
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            rb.rotation.SetAxisAngle(Vector3.up, angle);
+            magnitude = direction.magnitude;
+
+            direction.Normalize();
+
+            if (magnitude >= distance){
+                movement = direction;    
+            } else{
+                movement = Vector3.zero;
+            }
+            
         }
 
     }
