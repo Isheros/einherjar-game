@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -145,7 +146,7 @@ TerrainCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 76271102}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 0f7ea0cd4ff90ca4b91997e53194fc7e, type: 2}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: 3d3a6c7b5ee4eca4eaa12ae49ca70513, type: 2}
   m_EnableTreeColliders: 1
@@ -157,7 +158,7 @@ Terrain:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 76271102}
   m_Enabled: 1
-  serializedVersion: 5
+  serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 3d3a6c7b5ee4eca4eaa12ae49ca70513, type: 2}
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 50
@@ -180,6 +181,7 @@ Terrain:
   m_ScaleInLightmap: 0.0256
   m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
   m_GroupingID: 0
+  m_RenderingLayerMask: 1
   m_AllowAutoConnect: 1
 --- !u!4 &76271105
 Transform:
@@ -206,9 +208,10 @@ GameObject:
   - component: {fileID: 304517017}
   - component: {fileID: 304517016}
   - component: {fileID: 304517015}
-  - component: {fileID: 304517014}
   - component: {fileID: 304517013}
   - component: {fileID: 304517018}
+  - component: {fileID: 304517019}
+  - component: {fileID: 304517014}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -224,8 +227,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 304517012}
   serializedVersion: 2
-  m_Mass: 4
-  m_Drag: 5
+  m_Mass: 6
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -243,8 +246,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.9486363, z: 1}
+  m_Center: {x: 0, y: 0.025681937, z: 0}
 --- !u!23 &304517015
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -259,6 +262,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -298,9 +302,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 304517012}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.56, y: 0.52, z: 0.61}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.41, y: 0.78, z: 0.63}
+  m_LocalScale: {x: 0.2, y: 1.5, z: 0.4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -314,22 +318,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 304517012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acfd0092bd216e4489bf407cb37eab3e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bc03344faeecb94286197a1b54e7986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.6
+  moveSpeed: 0.3
   runSpeed: 1
-  jumpForce: 8
-  grnd: 0
-  jumping: 0
-  jumpTime: 0.2
+  movement: {x: 0, y: 0, z: 0}
+  jumpForce: 0.2
+  isGrnd: 0
+  isJmpg: 0
+  jumpTime: 0.1
   jumpTimeCount: 0
-  rayDistance: 0.52
+  jump: 0
+  jumpVel: {x: 0, y: 0, z: 0}
+  rayDistance: 1
   rb: {fileID: 304517013}
   cameraObject: {fileID: 963194225}
   charNumber: 0
   activateMove: 0
+  otherPlayer: {fileID: 1502901858}
+  distance: 1.8
+  magnitude: 0
   vel: {x: 0, y: 0, z: 0}
+--- !u!136 &304517019
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304517012}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.22161932
+  m_Height: 1.0203407
+  m_Direction: 1
+  m_Center: {x: -0.019915104, y: 0, z: -0.02987219}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,8 +379,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 1
+  m_Shape: 0
   m_Color: {r: 0.9528302, g: 0.9407718, b: 0.9078854, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -432,8 +457,8 @@ GameObject:
   - component: {fileID: 953677089}
   - component: {fileID: 953677088}
   - component: {fileID: 953677087}
-  - component: {fileID: 953677086}
   - component: {fileID: 953677090}
+  - component: {fileID: 953677086}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -448,7 +473,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 953677085}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 0f7ea0cd4ff90ca4b91997e53194fc7e, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -468,6 +493,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -643,9 +669,10 @@ GameObject:
   - component: {fileID: 1502901858}
   - component: {fileID: 1502901857}
   - component: {fileID: 1502901856}
-  - component: {fileID: 1502901855}
   - component: {fileID: 1502901854}
   - component: {fileID: 1502901853}
+  - component: {fileID: 1502901855}
+  - component: {fileID: 1502901859}
   m_Layer: 0
   m_Name: Character2
   m_TagString: Untagged
@@ -662,21 +689,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1502901852}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acfd0092bd216e4489bf407cb37eab3e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bc03344faeecb94286197a1b54e7986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.6
+  moveSpeed: 0.3
   runSpeed: 1
-  jumpForce: 8
-  grnd: 0
-  jumping: 0
-  jumpTime: 0.2
+  movement: {x: 0, y: 0, z: 0}
+  jumpForce: 0.2
+  isGrnd: 0
+  isJmpg: 0
+  jumpTime: 0.1
   jumpTimeCount: 0
-  rayDistance: 0.52
+  jump: 0
+  jumpVel: {x: 0, y: 0, z: 0}
+  rayDistance: 1
   rb: {fileID: 1502901854}
   cameraObject: {fileID: 963194225}
   charNumber: 1
   activateMove: 0
+  otherPlayer: {fileID: 304517017}
+  distance: 1.8
+  magnitude: 0
   vel: {x: 0, y: 0, z: 0}
 --- !u!54 &1502901854
 Rigidbody:
@@ -686,27 +719,28 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1502901852}
   serializedVersion: 2
-  m_Mass: 4
-  m_Drag: 5
+  m_Mass: 6
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &1502901855
-BoxCollider:
+--- !u!136 &1502901855
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1502901852}
-  m_Material: {fileID: 13400000, guid: 5b8b75d874ca52247b4c731591e9415c, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.22161932
+  m_Height: 1.0136273
+  m_Direction: 1
+  m_Center: {x: -0.019915104, y: 0.0033569338, z: -0.02987219}
 --- !u!23 &1502901856
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -721,6 +755,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -761,9 +796,22 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1502901852}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.47, y: 0.52, z: 0.61}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.55, y: 0.82, z: 0.61}
+  m_LocalScale: {x: 0.2, y: 1.8, z: 0.4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1502901859
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502901852}
+  m_Material: {fileID: 13400000, guid: 5b8b75d874ca52247b4c731591e9415c, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.9486363, z: 1}
+  m_Center: {x: 0, y: 0.025681937, z: 0}
