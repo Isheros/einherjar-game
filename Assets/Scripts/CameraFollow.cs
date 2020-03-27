@@ -46,7 +46,7 @@ public class CameraFollow : MonoBehaviour
         if(transform.position != target.position){
             // Primero asigno la posicion objetivo a un vector,
             // conservando la posicion Y de la camara
-            Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z);
+            Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z - 1);
             // Hace una transformacion suave entre la posicion actual
             // y la posicion destino
             transform.position = Vector3.Lerp(transform.position, targetPosition, smoothing);
