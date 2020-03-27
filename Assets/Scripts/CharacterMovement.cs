@@ -40,7 +40,7 @@ public class CharacterMovement : MonoBehaviour
     // Para seguir al personaje
     public Transform otherPlayer;
     public float distance;
-    private float angle;
+    public Quaternion rotationM;
 
     [Header("Debug")]
     public bool isGrnd;
@@ -62,18 +62,31 @@ public class CharacterMovement : MonoBehaviour
         // Para saber si esta tocando el piso
         isGrnd = IsGrounded();
 
+        transform.rotation = Quaternion.Lerp(
+                transform.rotation, rotationM, 1.5f * Time.fixedDeltaTime);
+
         activateMove = cameraObject.GetComponent<CameraFollow>().characterSwitch;
 
         if ((activateMove ? 1 : 0) == charNumber){
             ProcessMovement();
         }else{
             Vector3 p2Direction = otherPlayer.position - transform.position;
-            angle = Mathf.Atan2(p2Direction.x, p2Direction.z) * Mathf.Rad2Deg;
+            Quaternion angle = Quaternion.Euler(0, Mathf.Atan2(p2Direction.x, p2Direction.z) * Mathf.Rad2Deg, 0); 
+            
+            if (direction.x != 0 || direction.z != 0)
+            {
+                rotationM = angle;
+            } else {
+                rotationM = transform.rotation;
+            }
+
             if (p2Direction.magnitude >= distance){
                 direction = p2Direction.normalized;
             } else{
                 direction = Vector3.zero;
             }
+
+            
             
         }
     }
@@ -87,14 +100,6 @@ public class CharacterMovement : MonoBehaviour
     {
         Move();
     }
-
-    /// ------------------------------------------------------------------------
-    /// <summary> 
-    /// Called every frame, after update 
-    /// </summary>
-    /// ------------------------------------------------------------------------
-    void LateUpdate(){}
-
     /// ------------------------------------------------------------------------
     /// <summary> 
     /// Procesa la entrada de las palancas 
@@ -104,7 +109,18 @@ public class CharacterMovement : MonoBehaviour
     {
         // Obtiene la entrada de las palancas
         direction.x = Input.GetAxisRaw("Horizontal");
+        direction.y = 0f;
         direction.z = Input.GetAxisRaw("Vertical");
+ 
+        direction.Normalize();
+
+
+        if (direction.x != 0 || direction.z != 0)
+        {
+            rotationM = Quaternion.LookRotation(direction);
+        } else {
+            rotationM = transform.rotation;
+        }
 
         // Obtiene la entrada para correr
         if (Input.GetButton("Fire3"))
@@ -114,7 +130,7 @@ public class CharacterMovement : MonoBehaviour
 
 
 
-        direction.Normalize();
+
     }
 
     /// ------------------------------------------------------------------------
@@ -125,7 +141,12 @@ public class CharacterMovement : MonoBehaviour
     private void Move()
     {
         rb.AddForce(direction * moveSpeed * runSpeed, ForceMode.VelocityChange);
-        transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationM, 250 * Time.deltaTime);
+
+        if(rb.velocity.magnitude > 6f)
+        {
+            rb.velocity = rb.velocity.normalized * 6f;
+        }
     }
 
     /// <summary>
