@@ -30,6 +30,7 @@ public class CharacterMovement : MonoBehaviour
 
     //Rigidbody
     public Rigidbody rb;
+    public Animator animator;
     public GameObject cameraObject;
     
     [Header("Cambio Personaje")]
@@ -69,6 +70,10 @@ public class CharacterMovement : MonoBehaviour
 
         if ((activateMove ? 1 : 0) == charNumber){
             ProcessMovement();
+            if (Input.GetMouseButtonDown(1))
+            {
+                Animate("attack");
+            }
         }else{
             Vector3 p2Direction = otherPlayer.position - transform.position;
             Quaternion angle = Quaternion.Euler(0, Mathf.Atan2(p2Direction.x, p2Direction.z) * Mathf.Rad2Deg, 0); 
@@ -193,4 +198,23 @@ public class CharacterMovement : MonoBehaviour
         Debug.DrawRay(transform.position, Vector3.down * rayDistance, Color.blue);
         return Physics.Raycast(transform.position, Vector3.down, rayDistance);
     }
+
+    void Animate(string animation)
+    {
+        DisableOtherAnimations(animator, animation);
+        animator.SetBool(animation, true);
+    }
+
+    void DisableOtherAnimations(Animator animator, string animation)
+    {
+        foreach(AnimatorControllerParameter parameter in animator.parameters)
+        {
+            if(parameter.name != animation){
+                animator.SetBool(parameter.name, false);
+            }
+        }
+
+    }
+
+
 }

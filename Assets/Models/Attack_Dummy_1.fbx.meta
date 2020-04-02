@@ -21,9 +21,9 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
       copied configuration does not match position in animation file:\n\t'Cadera.R.001'
-      : position error = 1.659327 mm\nCopied Avatar Rig Configuration mis-match.
+      : position error = 1.659328 mm\nCopied Avatar Rig Configuration mis-match.
       Inbetween bone rotation in copied configuration does not match rotation in
-      animation file:\n\t'Cadera.R.001' : rotation error = 21.974277 deg\n"
+      animation file:\n\t'Cadera.R.001' : rotation error = 21.974260 deg\n"
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Armature|ArmatureAction' has import animation
       warnings that might lower retargeting quality:\nNote: Activate translation
@@ -62,7 +62,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
